@@ -1,3 +1,4 @@
+import { produce } from 'immer';
 import { Cycle } from '../../contexts/CyclesContext';
 import { ActionTypes } from './actions';
 
@@ -9,41 +10,37 @@ interface CyclesState {
 export function cyclesReducer(state: CyclesState, action) {
     switch (action.type) {
         case ActionTypes.ADD:
-            return {
-                ...state,
-                cycles: [...state.cycles, action.payload.cycleCreated],
-                activeCycleId: action.payload.cycleCreated.id,
-            };
+            return produce(state, (draft) => {
+                draft.cycles.push(action.payload.cycleCreated);
+                draft.activeCycleId = action.payload.cycleCreated.id;
+            });
 
-        case ActionTypes.FINISH:
-            return {
-                ...state,
-                cycles: state.cycles.map((cycle) => {
-                    if (cycle.id === state.activeCycleId) {
-                        return {
-                            ...cycle,
-                            finishedDate: new Date(),
-                        };
-                    } else {
-                        return cycle;
-                    }
-                }),
-            };
-        case ActionTypes.INTERRUPT:
-            return {
-                ...state,
-                cycles: state.cycles.map((cycle) => {
-                    if (cycle.id === state.activeCycleId) {
-                        return {
-                            ...cycle,
-                            interruptedDate: new Date(),
-                        };
-                    } else {
-                        return cycle;
-                    }
-                }),
-                activeCycleId: null,
-            };
+        case ActionTypes.FINISH: {
+            const currentCycleIndex = state.cycles.findIndex((cycle) => {
+                return cycle.id === state.activeCycleId;
+            });
+
+            if (currentCycleIndex > 0) {
+                return state;
+            }
+            return produce(state, (draft) => {
+                draft.activeCycleId = null;
+                draft.cycles[currentCycleIndex].finishedDate = new Date();
+            });
+        }
+        case ActionTypes.INTERRUPT: {
+            const currentCycleIndex = state.cycles.findIndex((cycle) => {
+                return cycle.id === state.activeCycleId;
+            });
+
+            if (currentCycleIndex > 0) {
+                return state;
+            }
+            return produce(state, (draft) => {
+                draft.activeCycleId = null;
+                draft.cycles[currentCycleIndex].interruptedDate = new Date();
+            });
+        }
         default:
             return state;
     }
