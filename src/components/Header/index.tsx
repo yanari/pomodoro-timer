@@ -1,11 +1,16 @@
-import { Scroll, Timer } from "phosphor-react";
-import { HeaderContainer } from "./styles";
-import { NavLink } from "react-router-dom";
+import { Scroll, Timer } from 'phosphor-react';
+import { HeaderContainer } from './styles';
+import { NavLink } from 'react-router-dom';
 
 export function Header() {
     return (
         <HeaderContainer>
-            <span>logo</span>
+            <span>
+                {/* <label className="switch">
+                    <input type="checkbox" />
+                    <span className="slider round"></span>
+                </label> */}
+            </span>
             <nav>
                 <NavLink to="/" title="Timer">
                     <Timer size={24} />
@@ -15,5 +20,5 @@ export function Header() {
                 </NavLink>
             </nav>
         </HeaderContainer>
-    )
+    );
 }

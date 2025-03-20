@@ -7,12 +7,19 @@ interface CyclesState {
     activeCycleId: string | null;
 }
 
-export function cyclesReducer(state: CyclesState, action) {
+type CyclesAction = {
+    type: string;
+    payload?: Cycle;
+};
+
+export function cyclesReducer(state: CyclesState, action: CyclesAction) {
     switch (action.type) {
         case ActionTypes.ADD:
             return produce(state, (draft) => {
-                draft.cycles.push(action.payload.cycleCreated);
-                draft.activeCycleId = action.payload.cycleCreated.id;
+                if (action.payload) {
+                    draft.cycles.push(action.payload);
+                    draft.activeCycleId = action.payload.id;
+                }
             });
 
         case ActionTypes.FINISH: {
