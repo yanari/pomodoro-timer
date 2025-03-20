@@ -6,12 +6,12 @@ import {
 } from './styles';
 import * as zod from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CycleStartedForm } from './components/CycleStartedForm';
+import { CycleCreatedForm } from './components/CycleCreatedForm';
 import { Countdown } from './components/Countdown';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useCyclesContext } from '../../contexts/CyclesContext';
 
-const cycleStartedFormValidationSchema = zod.object({
+const cycleCreatedFormValidationSchema = zod.object({
     task: zod.string().min(1, 'Informe a tarefa'),
     minutesAmount: zod
         .number()
@@ -19,21 +19,21 @@ const cycleStartedFormValidationSchema = zod.object({
         .max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
 });
 
-type CycleStartedFormData = zod.infer<typeof cycleStartedFormValidationSchema>;
+type CycleCreatedFormData = zod.infer<typeof cycleCreatedFormValidationSchema>;
 
 export function Home() {
     const { createNewCycle, interruptCycle, activeCycle } = useCyclesContext();
 
-    const cycleStartedForm = useForm<CycleStartedFormData>({
-        resolver: zodResolver(cycleStartedFormValidationSchema),
+    const cycleCreatedForm = useForm<CycleCreatedFormData>({
+        resolver: zodResolver(cycleCreatedFormValidationSchema),
     });
 
-    const { handleSubmit, watch, reset } = cycleStartedForm;
+    const { handleSubmit, watch, reset } = cycleCreatedForm;
 
     const task = watch('task');
     const isSubmitDisabled = !task;
 
-    const handleCreateNewCycle = (data: CycleStartedFormData) => {
+    const handleCreateNewCycle = (data: CycleCreatedFormData) => {
         createNewCycle(data);
         reset();
     };
@@ -41,8 +41,8 @@ export function Home() {
     return (
         <HomeContainer>
             <form action="" onSubmit={handleSubmit(handleCreateNewCycle)}>
-                <FormProvider {...cycleStartedForm}>
-                    <CycleStartedForm />
+                <FormProvider {...cycleCreatedForm}>
+                    <CycleCreatedForm />
                 </FormProvider>
 
                 <Countdown />
