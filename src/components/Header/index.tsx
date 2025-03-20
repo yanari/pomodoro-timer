@@ -1,16 +1,18 @@
 import { Scroll, Timer } from 'phosphor-react';
 import { HeaderContainer } from './styles';
 import { NavLink } from 'react-router-dom';
+import { SegmentedTabs } from '../SegmentedTabs';
 
 export function Header() {
     return (
         <HeaderContainer>
-            <span>
-                {/* <label className="switch">
-                    <input type="checkbox" />
-                    <span className="slider round"></span>
-                </label> */}
-            </span>
+            <SegmentedTabs
+                name="noise_type"
+                options={[
+                    {label: 'White Noise', id: 'white'},
+                    {label: 'Gray Noise', id: 'gray'},
+                ]}
+            />
             <nav>
                 <NavLink to="/" title="Timer">
                     <Timer size={24} />
