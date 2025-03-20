@@ -1,13 +1,13 @@
 import { HistoryContainer, HistoryList, Status } from './styles';
 import { useCyclesContext } from '../../contexts/CyclesContext';
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 export function History() {
     const { cycles } = useCyclesContext();
     return (
         <HistoryContainer>
             <h1>Meu histórico</h1>
-
-            <pre>{JSON.stringify(cycles, null, 4)}</pre>
 
             <HistoryList>
                 <table>
@@ -20,46 +20,36 @@ export function History() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Tarefa</td>
-                            <td>20 minutos</td>
-                            <td>Há dois meses</td>
-                            <td>
-                                <Status statusColor="green">Concluído</Status>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tarefa</td>
-                            <td>20 minutos</td>
-                            <td>Há dois meses</td>
-                            <td>
-                                <Status statusColor="green">Concluído</Status>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tarefa</td>
-                            <td>20 minutos</td>
-                            <td>Há dois meses</td>
-                            <td>
-                                <Status statusColor="green">Concluído</Status>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tarefa</td>
-                            <td>20 minutos</td>
-                            <td>Há dois meses</td>
-                            <td>
-                                <Status statusColor="green">Concluído</Status>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tarefa</td>
-                            <td>20 minutos</td>
-                            <td>Há dois meses</td>
-                            <td>
-                                <Status statusColor="green">Concluído</Status>
-                            </td>
-                        </tr>
+                        {cycles.map((cycle) => {
+                            return (
+                                <tr key={cycle.id}>
+                                    <td>{cycle.task}</td>
+                                    <td>{cycle.minutesAmount} minutos</td>
+                                    <td>{formatDistanceToNow(cycle.startDate, {
+                                        addSuffix: true,
+                                        locale: ptBR
+                                    })}</td>
+                                    <td>
+                                        {cycle.finishedDate && (
+                                            <Status color="green">
+                                                Concluído
+                                            </Status>
+                                        )}
+                                        {cycle.interruptedDate && (
+                                            <Status color="red">
+                                                Interrompido
+                                            </Status>
+                                        )}
+                                        {!cycle.finishedDate &&
+                                            !cycle.interruptedDate && (
+                                                <Status color="yellow">
+                                                    Em andamento
+                                                </Status>
+                                            )}
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </HistoryList>
