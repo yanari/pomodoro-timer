@@ -1,0 +1,117 @@
+import { createContext, ReactNode, useContext, useState } from 'react';
+
+interface CreateCycleData {
+    task: string;
+    minutesAmount: number;
+}
+
+interface Cycle {
+    id: string;
+    task: string;
+    minutesAmount: number;
+    startDate: Date;
+    interruptedDate?: Date;
+    finishedDate?: Date;
+}
+
+interface CyclesContextType {
+    cycles: Cycle[];
+    activeCycle: Cycle | undefined;
+    activeCycleId: string | null;
+    amountSecondsPassed: number;
+    finishCurrentCycle: () => void;
+    setSecondsPassed: (seconds: number) => void;
+    createNewCycle: (data: CreateCycleData) => void;
+    interruptCycle: () => void;
+}
+
+const CyclesContext = createContext({} as CyclesContextType);
+
+export function useCyclesContext() {
+    return useContext(CyclesContext);
+}
+
+interface CyclesContextProviderProps {
+    children: ReactNode;
+}
+
+export function CyclesContextProvider({
+    children,
+}: CyclesContextProviderProps) {
+    const [cycles, setCycles] = useState<Cycle[]>([]);
+    const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
+    const [amountSecondsPassed, setAmountsSecondsPassed] = useState<number>(0);
+
+    const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+    const setSecondsPassed = (seconds: number) => {
+        setAmountsSecondsPassed(seconds);
+    };
+
+    const finishCurrentCycle = () => {
+        setCycles((state) =>
+            state.map((cycle) => {
+                if (cycle.id === activeCycleId) {
+                    return {
+                        ...cycle,
+                        finishedDate: new Date(),
+                    };
+                } else {
+                    return cycle;
+                }
+            })
+        );
+    };
+
+    const interruptCurrentCycle = () => {
+        setCycles((state) =>
+            state.map((cycle) => {
+                if (cycle.id === activeCycleId) {
+                    return {
+                        ...cycle,
+                        interruptedDate: new Date(),
+                    };
+                } else {
+                    return cycle;
+                }
+            })
+        );
+    };
+
+    const createNewCycle = (data: CreateCycleData) => {
+        const id = String(new Date().getTime());
+        const cycleStarted: Cycle = {
+            id,
+            task: data.task,
+            minutesAmount: data.minutesAmount,
+            startDate: new Date(),
+        };
+
+        setCycles((state) => [...state, cycleStarted]);
+        setActiveCycleId(id);
+        setAmountsSecondsPassed(0);
+    };
+
+    const interruptCycle = () => {
+        interruptCurrentCycle();
+        setActiveCycleId(null);
+        setAmountsSecondsPassed(0);
+    };
+
+    return (
+        <CyclesContext.Provider
+            value={{
+                cycles,
+                activeCycle,
+                activeCycleId,
+                finishCurrentCycle,
+                amountSecondsPassed,
+                setSecondsPassed,
+                createNewCycle,
+                interruptCycle,
+            }}
+        >
+            {children}
+        </CyclesContext.Provider>
+    );
+}

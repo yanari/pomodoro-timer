@@ -1,7 +1,7 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { CountdownContainer, Separator } from './styles';
 import { differenceInSeconds } from 'date-fns';
-import { CyclesContext } from '../..';
+import { useCyclesContext } from '../../../../contexts/CyclesContext';
 
 export function Countdown() {
     const {
@@ -10,7 +10,7 @@ export function Countdown() {
         finishCurrentCycle,
         amountSecondsPassed,
         setSecondsPassed,
-    } = useContext(CyclesContext);
+    } = useCyclesContext();
 
     const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
 
