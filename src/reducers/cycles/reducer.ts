@@ -1,6 +1,6 @@
 import { produce } from 'immer';
-import { Cycle } from '../../contexts/CyclesContext';
 import { ActionTypes } from './actions';
+import { Cycle } from '../../contexts/CyclesContext/cycles.interface';
 
 interface CyclesState {
     cycles: Cycle[];

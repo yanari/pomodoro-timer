@@ -9,10 +9,10 @@ function App() {
     return (
         <ThemeProvider theme={defaultTheme}>
             <BrowserRouter>
-                <CyclesContextProvider>
-                    <Router />
-                </CyclesContextProvider>
-                <GlobalStyle />
+                    <CyclesContextProvider>
+                        <Router />
+                    </CyclesContextProvider>
+                    <GlobalStyle />
             </BrowserRouter>
         </ThemeProvider>
     );

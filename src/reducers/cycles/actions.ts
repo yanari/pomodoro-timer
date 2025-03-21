@@ -1,4 +1,4 @@
-import { Cycle } from '../../contexts/CyclesContext';
+import { Cycle } from '../../contexts/CyclesContext/cycles.interface';
 
 export enum ActionTypes {
     ADD = 'ADD',

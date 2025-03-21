@@ -9,13 +9,15 @@ interface Option {
 interface SegmentedTabsProps {
     name: string;
     options: Option[];
+    onChange: (option: string) => void;
 }
 
-/*
-    Pink noise can help increase productivity, memory, focus and attention span.
-    Brown noise can aid in faster reaction time and organizational skills. 
-*/
 export function SegmentedTabs(props: SegmentedTabsProps) {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const target = (event.target) as HTMLInputElement;
+        props.onChange(target.value);
+    }
+
     return (
         <SegmentedTabsContainer>
             {props.options.map((option) => {
@@ -24,8 +26,9 @@ export function SegmentedTabs(props: SegmentedTabsProps) {
                         <input
                             type="radio"
                             id={option.id}
-                            value={option.label}
+                            value={option.id}
                             name={props.name}
+                            onChange={handleChange}
                         />
                         <label htmlFor={option.id}>{option.label}</label>
                     </Fragment>
