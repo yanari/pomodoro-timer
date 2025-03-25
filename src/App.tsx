@@ -3,16 +3,17 @@ import { defaultTheme } from './styles/themes/default';
 import { Router } from './Router';
 import { GlobalStyle } from './styles/global';
 import { BrowserRouter } from 'react-router-dom';
-import { CyclesContextProvider } from './contexts/CyclesContext';
+// import { CyclesContextProvider } from './contexts/CyclesContext';
+import { PomodoroContextProvider } from './contexts/PomodoroContext';
 
 function App() {
     return (
         <ThemeProvider theme={defaultTheme}>
             <BrowserRouter>
-                    <CyclesContextProvider>
-                        <Router />
-                    </CyclesContextProvider>
-                    <GlobalStyle />
+                <PomodoroContextProvider>
+                    <Router />
+                </PomodoroContextProvider>
+                <GlobalStyle />
             </BrowserRouter>
         </ThemeProvider>
     );
