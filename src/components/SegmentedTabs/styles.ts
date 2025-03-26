@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const SegmentedTabsContainer = styled.div`
     --radius: 8px;
@@ -8,11 +8,11 @@ export const SegmentedTabsContainer = styled.div`
     height: 3rem;
     display: grid;
     grid-auto-flow: column;
-    background: ${(props) => props.theme['gray-900']};
+    background: ${(props) => props.theme.background};
     border-radius: 8px;
     grid-auto-columns: 1fr;
     position: relative;
-    border: 4px solid ${(props) => props.theme['gray-900']};
+    /* border: 4px solid ${(props) => props.theme['gray-900']}; */
 
     input,
     .sr-only {
@@ -62,7 +62,7 @@ export const SegmentedTabsContainer = styled.div`
         display: grid;
         border-radius: 4px;
         place-items: center;
-        color: ${(props) => props.theme.white};
+        color: ${(props) => props.theme.text};
         transition: background 0.25s ease, color 0.25s ease;
         z-index: 1;
     }
@@ -72,10 +72,10 @@ export const SegmentedTabsContainer = styled.div`
         content: '';
         width: calc(100% / var(--count));
         height: 100%;
-        background: ${(props) => props.theme['green-500']};
+        background: ${(props) => props.theme.primary};
         position: absolute;
         border-radius: 4px;
         translate: calc(var(--active, 0) * 100%);
         transition: translate 0.2s ease;
     }
-`;
+`

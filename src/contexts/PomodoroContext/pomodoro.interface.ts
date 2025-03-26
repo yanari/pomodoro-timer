@@ -3,5 +3,3 @@ export enum PomodoroMode {
     SHORT_BREAK = 'Short Break',
     LONG_BREAK = 'Long Break',
 }
-
-export type PomodoroPhase = keyof typeof PomodoroMode

@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 import { PomodoroMode } from './pomodoro.interface'
+import { ThemeVariant } from '../../styles/themes/theme.interface'
 
 interface PomodoroContextType {
     phase: PomodoroMode
@@ -26,11 +27,13 @@ const DEFAULT_SETTINGS = {
 }
 
 interface PomodoroContextProviderProps {
-    children: ReactNode
+    children: ReactNode,
+    changeTheme: (theme: ThemeVariant) => void
 }
 
 export function PomodoroContextProvider({
     children,
+    changeTheme
 }: PomodoroContextProviderProps) {
     const {
         focusDuration,
@@ -49,9 +52,10 @@ export function PomodoroContextProvider({
     }
 
     const finishFocusTime = () => {
-        const isLongBreak = pomodoroCount + 1 >= pomodorosBeforeLongBreak
+        const isLongBreak = (pomodoroCount + 1) % pomodorosBeforeLongBreak === 0
 
         setPomodoroCount((state) => state + 1)
+        changeTheme(isLongBreak ? PomodoroMode.LONG_BREAK : PomodoroMode.SHORT_BREAK)
         setPhase(
             isLongBreak ? PomodoroMode.LONG_BREAK : PomodoroMode.SHORT_BREAK
         )
@@ -59,6 +63,7 @@ export function PomodoroContextProvider({
     }
 
     const finishBreakTime = () => {
+        changeTheme(PomodoroMode.FOCUS_TIME);
         setPhase(PomodoroMode.FOCUS_TIME)
         setTimeLeft(DEFAULT_SETTINGS.focusDuration)
     }
@@ -73,6 +78,7 @@ export function PomodoroContextProvider({
 
     const resetTimer = () => {
         setIsRunning(false);
+        changeTheme(PomodoroMode.FOCUS_TIME);
         setPhase(PomodoroMode.FOCUS_TIME)
         setTimeLeft(focusDuration)
         setPomodoroCount(0)

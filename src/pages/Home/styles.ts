@@ -4,54 +4,43 @@ export const HomeContainer = styled.main`
     flex: 1;
 
     display: flex;
-    gap: 3rem;
+    gap: 4rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    /* form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    } */
 `
 
 export const StatusPomodoroContainer = styled.div`
     display: flex;
+    align-items: center;
     width: 100%;
-    justify-content: space-around;
+    max-width: 40rem;
+    justify-content: space-between;
+`
+
+export const PomodoroDisplayContainer = styled.p`
+    font-size: 0.875rem;
+    display: flex;
+    gap: 0.5rem;
 `
 
 export const ControlButtonsContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    max-width: 24rem;
+    max-width: 40rem;
 `
 
-interface ControlButtonProps {
-    variant: keyof typeof variants
-}
-
-const variants = {
-    primary: { color: 'gray-300', background: 'green-500', hover: 'green-700' },
-    secondary: {
-        color: 'green-500',
-        background: 'gray-200',
-        hover: 'gray-300',
-    },
-} as const
-
-export const ControlButton = styled.button<ControlButtonProps>`
-    background: ${(props) => props.theme[variants[props.variant].background]};
+export const ControlButton = styled.button`
+    background: ${(props) => props.theme.primary};
     border: 0;
-    padding: 1rem;
+    padding: 1rem 2rem;
     border-radius: 8px;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${(props) => props.theme[variants[props.variant].color]};
+    color: ${(props) => props.theme.text};
 
     gap: 0.5rem;
     font-weight: bold;
@@ -64,6 +53,6 @@ export const ControlButton = styled.button<ControlButtonProps>`
     }
 
     &:not(:disabled):hover {
-        background: ${(props) => props.theme[variants[props.variant].hover]};
+        filter: brightness(75%);
     }
 `

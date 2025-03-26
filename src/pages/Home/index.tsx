@@ -2,6 +2,7 @@ import {
     ControlButton,
     ControlButtonsContainer,
     HomeContainer,
+    PomodoroDisplayContainer,
     StatusPomodoroContainer,
 } from './styles'
 import { Countdown } from './components/Countdown'
@@ -12,24 +13,27 @@ export function Home() {
     const {
         phase,
         isRunning,
+        pomodoroCount,
         skipCurrent,
         startTimer,
         resetTimer,
-        pomodoroCount,
     } = usePomodoroContext()
 
     return (
         <HomeContainer>
             <StatusPomodoroContainer>
-                {phase}
-                <span>Completed Pomodoros: {pomodoroCount}</span>
+                <h1>{phase}</h1>
+                <PomodoroDisplayContainer>
+                    {pomodoroCount > 0 && (
+                        <>Completed Pomodoros: 🍅 x{pomodoroCount}</>
+                    )}
+                </PomodoroDisplayContainer>
             </StatusPomodoroContainer>
 
             <Countdown />
 
             <ControlButtonsContainer>
                 <ControlButton
-                    variant="primary"
                     type="button"
                     onClick={isRunning ? skipCurrent : startTimer}
                 >
@@ -37,7 +41,6 @@ export function Home() {
                     {isRunning ? 'Skip' : 'Start'}
                 </ControlButton>
                 <ControlButton
-                    variant="secondary"
                     type="button"
                     onClick={resetTimer}
                 >
