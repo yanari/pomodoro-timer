@@ -8,11 +8,11 @@ export const SegmentedTabsContainer = styled.div`
     height: 3rem;
     display: grid;
     grid-auto-flow: column;
-    background: ${(props) => props.theme.background};
+    background: ${(props) => props.theme.countdownBg};
     border-radius: 8px;
     grid-auto-columns: 1fr;
     position: relative;
-    /* border: 4px solid ${(props) => props.theme['gray-900']}; */
+    border: 5px solid ${(props) => props.theme.countdownBg};
 
     input,
     .sr-only {

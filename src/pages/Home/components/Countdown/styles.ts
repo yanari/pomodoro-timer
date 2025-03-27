@@ -11,8 +11,8 @@ export const CountdownContainer = styled.div`
     gap: 1rem;
 
     span {
-        /* background: ${(props) => props.theme.background}; */
-        /*TODO: ver uma cor boa pra isso aqui*/
+        background: ${(props) => props.theme.countdownBg};
+        filter: brightness(80%);
         padding: 2rem 1rem;
         border-radius: 8px;
     }

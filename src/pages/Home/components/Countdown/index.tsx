@@ -3,7 +3,7 @@ import { CountdownContainer, Separator } from './styles'
 import { usePomodoroContext } from '../../../../contexts/PomodoroContext'
 
 export function Countdown() {
-    const { timeLeft, isRunning, setTimeLeft, skipCurrent } = usePomodoroContext()
+    const { timeLeft, isRunning, setTimeLeft } = usePomodoroContext()
 
     useEffect(() => {
         let interval: number
@@ -11,10 +11,7 @@ export function Countdown() {
             console.log(isRunning)
             interval = setInterval(() => {
                 setTimeLeft((state) => {
-                    if (state < 1) {
-                        return 0
-                    }
-                    return state - 1
+                    return state < 1 ? 0 : state - 1
                 })
             }, 1000)
         }
