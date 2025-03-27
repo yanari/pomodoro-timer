@@ -3,10 +3,13 @@ import {
     ReactNode,
     useContext,
     useEffect,
+    useReducer,
     useState,
 } from 'react'
 import { PomodoroMode } from './pomodoro.interface'
 import { ThemeVariant } from '../../styles/themes/theme.interface'
+import { pomodoroReducer } from '../../reducers/reducer'
+import { Actions } from '../../reducers/actions'
 
 interface PomodoroContextType {
     phase: PomodoroMode
@@ -51,10 +54,18 @@ export function PomodoroContextProvider({
         shortBreakDuration,
     } = DEFAULT_SETTINGS
 
-    const [isRunning, setIsRunning] = useState<boolean>(false)
     const [timeLeft, setTimeLeft] = useState<number>(focusDuration)
-    const [phase, setPhase] = useState<PomodoroMode>(PomodoroMode.FOCUS_TIME)
-    const [pomodoroCount, setPomodoroCount] = useState<number>(0)
+
+    const [pomodoroState, dispatch] = useReducer(
+        pomodoroReducer,
+        {
+            isRunning: false,
+            phase: PomodoroMode.FOCUS_TIME,
+            pomodoroCount: 0,
+        }
+    )
+
+    const { isRunning, phase, pomodoroCount } = pomodoroState
 
     useEffect(() => {
         if (timeLeft === 0) {
@@ -63,25 +74,24 @@ export function PomodoroContextProvider({
     }, [timeLeft])
 
     const startTimer = () => {
-        setIsRunning(true)
+        dispatch({ type: Actions.START_TIMER })
     }
 
     const finishFocusTime = () => {
         const isLongBreak = (pomodoroCount + 1) % pomodorosBeforeLongBreak === 0
 
-        setPomodoroCount((state) => state + 1)
+        dispatch({ type: Actions.FINISH_FOCUS_TIME, payload: { isLongBreak } })
+
         changeTheme(
-            isLongBreak ? PomodoroMode.LONG_BREAK : PomodoroMode.SHORT_BREAK
-        )
-        setPhase(
             isLongBreak ? PomodoroMode.LONG_BREAK : PomodoroMode.SHORT_BREAK
         )
         setTimeLeft(isLongBreak ? longBreakDuration : shortBreakDuration)
     }
 
     const finishBreakTime = () => {
+        dispatch({ type: Actions.FINISH_BREAK_TIME })
+
         changeTheme(PomodoroMode.FOCUS_TIME)
-        setPhase(PomodoroMode.FOCUS_TIME)
         setTimeLeft(DEFAULT_SETTINGS.focusDuration)
     }
 
@@ -94,11 +104,10 @@ export function PomodoroContextProvider({
     }
 
     const resetTimer = () => {
-        setIsRunning(false)
+        dispatch({ type: Actions.RESET_TIMER })
+
         changeTheme(PomodoroMode.FOCUS_TIME)
-        setPhase(PomodoroMode.FOCUS_TIME)
         setTimeLeft(focusDuration)
-        setPomodoroCount(0)
     }
 
     return (
