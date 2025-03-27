@@ -12,7 +12,6 @@ export function Countdown() {
             interval = setInterval(() => {
                 setTimeLeft((state) => {
                     if (state < 1) {
-                        skipCurrent()
                         return 0
                     }
                     return state - 1
