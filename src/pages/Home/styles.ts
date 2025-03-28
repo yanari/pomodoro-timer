@@ -2,7 +2,6 @@ import { styled } from 'styled-components'
 
 export const HomeContainer = styled.main`
     flex: 1;
-
     display: flex;
     gap: 4rem;
     flex-direction: column;
@@ -37,7 +36,7 @@ interface ControlButtonProps {
 
 export const ControlButton = styled.button<ControlButtonProps>`
     background: ${(props) =>
-        props.$isPrimary ? props.theme.primary : props.theme.white};
+        props.$isPrimary ? props.theme.primary : props.theme.button};
     border: 2px solid ${(props) => props.theme.primary};
     padding: 1rem 2rem;
     border-radius: 8px;

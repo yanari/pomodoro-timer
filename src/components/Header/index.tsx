@@ -1,12 +1,12 @@
-import { Scroll, Timer } from 'phosphor-react'
+import { Scroll, Timer } from '@phosphor-icons/react'
 import { HeaderContainer } from './styles'
 import { NavLink } from 'react-router-dom'
-import { NoiseControllers } from '../NoiseControllers'
+// import { NoiseControllers } from '../NoiseControllers'
 
 export function Header() {
     return (
         <HeaderContainer>
-            <NoiseControllers />
+            {/* <NoiseControllers /> */}
             <nav>
                 <NavLink to="/" title="Timer">
                     <Timer size={24} />

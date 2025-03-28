@@ -1,8 +1,8 @@
-import { SpeakerHigh, SpeakerSlash } from 'phosphor-react'
 import { SegmentedTabs } from '../SegmentedTabs'
 import { NoiseControllersContainer, ToggleSoundButton } from './styles'
 import { useAudio } from '../../hooks/useAudio'
 import { useState } from 'react'
+import { SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react'
 
 /*
     Pink noise can help increase productivity, memory, focus and attention span.

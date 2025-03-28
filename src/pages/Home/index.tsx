@@ -6,9 +6,10 @@ import {
     StatusPomodoroContainer,
 } from './styles'
 import { Countdown } from './components/Countdown'
-import { HandPalm, Play, SkipForward } from 'phosphor-react'
 import { usePomodoroContext } from '../../contexts/PomodoroContext'
 import { Tag } from '../../components/Tag'
+import { HandPalm, Play, SkipForward } from '@phosphor-icons/react'
+import { SoundControllers } from '../../components/SoundControllers'
 
 export function Home() {
     const { phase, isRunning, pomodoroCount, onClickMainButton, resetTimer } =
@@ -17,7 +18,7 @@ export function Home() {
     return (
         <HomeContainer>
             <StatusPomodoroContainer>
-                <h1>{phase}</h1>
+                <Tag as="h3">{phase}</Tag>
                 <PomodoroDisplayContainer>
                     {pomodoroCount > 0 && (
                         <Tag>Completed Pomodoros: 🍅 x{pomodoroCount}</Tag>
@@ -41,6 +42,8 @@ export function Home() {
                     Reset
                 </ControlButton>
             </ControlButtonsContainer>
+
+            <SoundControllers />
         </HomeContainer>
     )
 }
