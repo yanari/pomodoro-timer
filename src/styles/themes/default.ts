@@ -1,4 +1,5 @@
 export const defaultTheme = {
+    white: '#ccc',
     countdownBg: '#212121',
     textTimer: '#E1E1E1',
     background: '#121212',

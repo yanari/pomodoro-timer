@@ -28,7 +28,11 @@ export function Home() {
             <Countdown />
 
             <ControlButtonsContainer>
-                <ControlButton type="button" onClick={onClickMainButton}>
+                <ControlButton
+                    $isPrimary
+                    type="button"
+                    onClick={onClickMainButton}
+                >
                     {isRunning ? <SkipForward size={24} /> : <Play size={24} />}
                     {isRunning ? 'Skip' : 'Start'}
                 </ControlButton>

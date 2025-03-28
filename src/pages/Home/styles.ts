@@ -31,16 +31,22 @@ export const ControlButtonsContainer = styled.div`
     max-width: 40rem;
 `
 
-export const ControlButton = styled.button`
-    background: ${(props) => props.theme.primary};
-    border: 0;
+interface ControlButtonProps {
+    $isPrimary?: boolean
+}
+
+export const ControlButton = styled.button<ControlButtonProps>`
+    background: ${(props) =>
+        props.$isPrimary ? props.theme.primary : props.theme.white};
+    border: 2px solid ${(props) => props.theme.primary};
     padding: 1rem 2rem;
     border-radius: 8px;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${(props) => props.theme.text};
+    color: ${(props) =>
+        props.$isPrimary ? props.theme.text : props.theme.primary};
 
     gap: 0.5rem;
     font-weight: bold;
