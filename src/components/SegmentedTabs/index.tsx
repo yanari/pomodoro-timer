@@ -1,21 +1,21 @@
-import { Fragment } from 'react';
-import { SegmentedTabsContainer } from './styles';
+import { Fragment } from 'react'
+import { SegmentedTabsContainer } from './styles'
 
 interface Option {
-    label: string;
-    id: string;
+    label: string
+    id: string
 }
 
 interface SegmentedTabsProps {
-    name: string;
-    options: Option[];
-    onChange: (option: string) => void;
+    name: string
+    options: Option[]
+    onChange: (option: string) => void
 }
 
 export function SegmentedTabs(props: SegmentedTabsProps) {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const target = (event.target) as HTMLInputElement;
-        props.onChange(target.value);
+        const target = event.target as HTMLInputElement
+        props.onChange(target.value)
     }
 
     return (
@@ -32,8 +32,8 @@ export function SegmentedTabs(props: SegmentedTabsProps) {
                         />
                         <label htmlFor={option.id}>{option.label}</label>
                     </Fragment>
-                );
+                )
             })}
         </SegmentedTabsContainer>
-    );
+    )
 }

@@ -19,7 +19,7 @@ export const longBreakTheme = {
     ...defaultTheme,
     primary: '#2563eb', // Blue for deeper relaxation
     foreground:
-        'radial-gradient(circle at 50% 50%, rgba(16, 16, 17, 0.10) 0%, transparent 70%)',
+        'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 70%)',
 }
 
 export const focusTheme = {

@@ -18,7 +18,7 @@ export const StatusPomodoroContainer = styled.div`
     justify-content: space-between;
 `
 
-export const PomodoroDisplayContainer = styled.p`
+export const PomodoroDisplayContainer = styled.div`
     font-size: 0.875rem;
     display: flex;
     gap: 0.5rem;

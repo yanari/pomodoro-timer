@@ -1,7 +1,7 @@
-import { Scroll, Timer } from 'phosphor-react';
-import { HeaderContainer } from './styles';
-import { NavLink } from 'react-router-dom';
-import { NoiseControllers } from '../NoiseControllers';
+import { Scroll, Timer } from 'phosphor-react'
+import { HeaderContainer } from './styles'
+import { NavLink } from 'react-router-dom'
+import { NoiseControllers } from '../NoiseControllers'
 
 export function Header() {
     return (
@@ -16,5 +16,5 @@ export function Header() {
                 </NavLink>
             </nav>
         </HeaderContainer>
-    );
+    )
 }

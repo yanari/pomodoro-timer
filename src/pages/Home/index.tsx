@@ -8,16 +8,11 @@ import {
 import { Countdown } from './components/Countdown'
 import { HandPalm, Play, SkipForward } from 'phosphor-react'
 import { usePomodoroContext } from '../../contexts/PomodoroContext'
+import { Tag } from '../../components/Tag'
 
 export function Home() {
-    const {
-        phase,
-        isRunning,
-        pomodoroCount,
-        skipCurrent,
-        startTimer,
-        resetTimer,
-    } = usePomodoroContext()
+    const { phase, isRunning, pomodoroCount, onClickMainButton, resetTimer } =
+        usePomodoroContext()
 
     return (
         <HomeContainer>
@@ -25,7 +20,7 @@ export function Home() {
                 <h1>{phase}</h1>
                 <PomodoroDisplayContainer>
                     {pomodoroCount > 0 && (
-                        <>Completed Pomodoros: 🍅 x{pomodoroCount}</>
+                        <Tag>Completed Pomodoros: 🍅 x{pomodoroCount}</Tag>
                     )}
                 </PomodoroDisplayContainer>
             </StatusPomodoroContainer>
@@ -33,17 +28,11 @@ export function Home() {
             <Countdown />
 
             <ControlButtonsContainer>
-                <ControlButton
-                    type="button"
-                    onClick={isRunning ? skipCurrent : startTimer}
-                >
+                <ControlButton type="button" onClick={onClickMainButton}>
                     {isRunning ? <SkipForward size={24} /> : <Play size={24} />}
                     {isRunning ? 'Skip' : 'Start'}
                 </ControlButton>
-                <ControlButton
-                    type="button"
-                    onClick={resetTimer}
-                >
+                <ControlButton type="button" onClick={resetTimer}>
                     <HandPalm size={24} />
                     Reset
                 </ControlButton>

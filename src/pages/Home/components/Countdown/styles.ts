@@ -5,13 +5,10 @@ export const CountdownContainer = styled.div`
     font-size: 10rem;
     line-height: 8rem;
     color: ${(props) => props.theme.textTimer};
-    /* FIXME: não ta indo a cor certa */
 
     display: flex;
-    gap: 1rem;
 
     span {
-        background: ${(props) => props.theme.countdownBg};
         filter: brightness(80%);
         padding: 2rem 1rem;
         border-radius: 8px;

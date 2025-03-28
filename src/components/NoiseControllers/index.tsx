@@ -1,8 +1,8 @@
-import { SpeakerHigh, SpeakerSlash } from 'phosphor-react';
-import { SegmentedTabs } from '../SegmentedTabs';
-import { NoiseControllersContainer, ToggleSoundButton } from './styles';
-import { useAudio } from '../../hooks/useAudio';
-import { useState } from 'react';
+import { SpeakerHigh, SpeakerSlash } from 'phosphor-react'
+import { SegmentedTabs } from '../SegmentedTabs'
+import { NoiseControllersContainer, ToggleSoundButton } from './styles'
+import { useAudio } from '../../hooks/useAudio'
+import { useState } from 'react'
 
 /*
     Pink noise can help increase productivity, memory, focus and attention span.
@@ -10,13 +10,13 @@ import { useState } from 'react';
 */
 
 export function NoiseControllers() {
-    const [noiseAsset, setNoiseAsset] = useState<string>('audio/pink.mp3');
-    const { isPlaying, togglePlaying, toggleAudioSrc } = useAudio(noiseAsset);
+    const [noiseAsset, setNoiseAsset] = useState<string>('audio/pink.mp3')
+    const { isPlaying, togglePlaying, toggleAudioSrc } = useAudio(noiseAsset)
 
     const handleChangeNoise = (value: string) => {
-        setNoiseAsset(value);
-        toggleAudioSrc();
-    };
+        setNoiseAsset(value)
+        toggleAudioSrc()
+    }
     return (
         <NoiseControllersContainer>
             <SegmentedTabs
@@ -35,5 +35,5 @@ export function NoiseControllers() {
                 )}
             </ToggleSoundButton>
         </NoiseControllersContainer>
-    );
+    )
 }
