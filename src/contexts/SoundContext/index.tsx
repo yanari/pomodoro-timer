@@ -6,20 +6,7 @@ import {
     useMemo,
     useState,
 } from 'react'
-
-export enum Assets {
-    BROWN = 'audio/brown.mp3',
-    PINK = 'audio/pink.mp3',
-    COFFEE = 'audio/coffee.mp3',
-}
-
-interface SoundContextType {
-    isPlaying: boolean
-    assetSrc: Assets
-    play: () => void
-    pause: () => void
-    setAssetSource: (assetPath: Assets) => void
-}
+import { Assets, SoundContextType } from './sound.interface'
 
 const SoundContext = createContext({} as SoundContextType)
 
