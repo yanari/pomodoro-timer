@@ -10,7 +10,7 @@ export const CountdownContainer = styled.div`
 
     span {
         filter: brightness(80%);
-        padding: 2rem 1rem;
+        padding: 2rem 0.5rem;
         border-radius: 8px;
     }
 `

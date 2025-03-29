@@ -12,7 +12,8 @@ import {
     SoundControllerMuteButton,
     SoundControllerTitle,
 } from './styles'
-import { Assets, useSoundContext } from '../../contexts/SoundContext'
+import { useSoundContext } from '../../contexts/SoundContext'
+import { Assets } from '../../contexts/SoundContext/sound.interface'
 
 const noises = [
     { label: 'Pink Noise', sound: Assets.PINK, icon: Brain },

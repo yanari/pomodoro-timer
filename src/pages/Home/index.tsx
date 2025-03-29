@@ -12,8 +12,22 @@ import { HandPalm, Play, SkipForward } from '@phosphor-icons/react'
 import { SoundControllers } from '../../components/SoundControllers'
 
 export function Home() {
-    const { phase, isRunning, pomodoroCount, onClickMainButton, resetTimer } =
-        usePomodoroContext()
+    const {
+        phase,
+        isRunning,
+        pomodoroCount,
+        startTimer,
+        skipCurrent,
+        resetTimer,
+    } = usePomodoroContext()
+
+    const handleClickMainButton = () => {
+        if (isRunning) {
+            skipCurrent()
+        } else {
+            startTimer()
+        }
+    }
 
     return (
         <HomeContainer>
@@ -32,7 +46,7 @@ export function Home() {
                 <ControlButton
                     $isPrimary
                     type="button"
-                    onClick={onClickMainButton}
+                    onClick={handleClickMainButton}
                 >
                     {isRunning ? <SkipForward size={24} /> : <Play size={24} />}
                     {isRunning ? 'Skip' : 'Start'}

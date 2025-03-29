@@ -19,7 +19,7 @@ interface PomodoroContextType {
     skipCurrent: () => void
     resetTimer: () => void
     setTimeLeft: React.Dispatch<React.SetStateAction<number>>
-    onClickMainButton: () => void
+    startTimer: () => void
 }
 
 export const PomodoroContext = createContext({} as PomodoroContextType)
@@ -107,14 +107,6 @@ export function PomodoroContextProvider({
         setTimeLeft(focusDuration)
     }
 
-    const onClickMainButton = () => {
-        if (isRunning) {
-            skipCurrent()
-        } else {
-            startTimer()
-        }
-    }
-
     return (
         <PomodoroContext.Provider
             value={{
@@ -124,7 +116,7 @@ export function PomodoroContextProvider({
                 pomodoroCount,
                 setTimeLeft,
                 resetTimer,
-                onClickMainButton,
+                startTimer,
                 skipCurrent,
             }}
         >
