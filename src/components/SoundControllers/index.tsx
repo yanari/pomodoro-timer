@@ -14,18 +14,32 @@ import {
 } from './styles'
 import { useSoundContext } from '../../contexts/SoundContext'
 import { Assets } from '../../contexts/SoundContext/sound.interface'
+import { Tooltip } from 'react-tooltip'
 
 const noises = [
-    { label: 'Pink Noise', sound: Assets.PINK, icon: Brain },
+    {
+        label: 'Pink Noise',
+        sound: Assets.PINK,
+        icon: Brain,
+        id: 'pink_noise',
+        description:
+            'Pink noise can help increase<br/> productivity, memory, focus<br/> and attention span.',
+    },
     {
         label: 'Brown Noise',
         sound: Assets.BROWN,
         icon: Barcode,
+        id: 'brown_noise',
+        description:
+            'Brown noise can aid<br/> in faster reaction time<br/> and organizational skills.',
     },
     {
         label: 'Coffee Shop',
         sound: Assets.COFFEE,
         icon: Coffee,
+        id: 'coffee_shop',
+        description:
+            'Coffee shop noise can enhance focus,<br/> creativity, and productivity by providing a lively yet<br/> non-distracting background',
     },
     // {
     //     label: 'Lo-Fi',
@@ -65,11 +79,16 @@ export function SoundControllers() {
                     return (
                         <SoundControllerButton
                             $isSelected={isSelected}
-                            key={noise.label}
+                            key={noise.id}
+                            id={noise.id}
                             onClick={() => handleChangeNoise(noise.sound)}
+                            data-tooltip-html={noise.description}
+                            data-tooltip-place="top-start"
+                            data-tooltip-id={noise.id}
                         >
                             <Icon size={24} />
                             <span>{noise.label}</span>
+                            <Tooltip id={noise.id} />
                         </SoundControllerButton>
                     )
                 })}
