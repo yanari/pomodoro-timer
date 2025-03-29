@@ -13,11 +13,10 @@ export const SoundControllerTitle = styled.div`
 `
 
 export const SoundControllerBaseButton = styled.button`
-    cursor: pointer;
-
     border-radius: 8px;
 
-    &:hover {
+    &:not(:disabled):hover {
+        cursor: pointer;
         background-color: #0006;
     }
 `
@@ -39,16 +38,29 @@ export const SoundControllerContent = styled.div`
     gap: 1rem;
 `
 
-export const SoundControllerButton = styled(SoundControllerBaseButton)`
-    border: 1px solid #ffffff1a;
-    padding: 0.5rem;
-    background-color: ${(props) => props.theme.button};
+interface SoundControllerButtonProps {
+    $isSelected: boolean
+}
+
+export const SoundControllerButton = styled(
+    SoundControllerBaseButton
+)<SoundControllerButtonProps>`
+    border: 1px solid
+        ${(props) =>
+            props.$isSelected ? props.theme.primary : props.theme.border};
+    padding: 0.75rem;
+
+    background-color: ${(props) =>
+        props.$isSelected
+            ? props.theme.buttonSelectedBg
+            : props.theme.buttonBg};
     color: ${(props) => props.theme.text};
     border-radius: 8px;
 
     span {
         display: block;
         margin-top: 0.25rem;
+        font-size: 0.875rem;
     }
 
     &:hover {

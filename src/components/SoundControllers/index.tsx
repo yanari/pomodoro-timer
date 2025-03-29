@@ -4,7 +4,6 @@ import {
     Coffee,
     SpeakerHigh,
     SpeakerSlash,
-    VinylRecord,
 } from '@phosphor-icons/react'
 import {
     SoundControllerButton,
@@ -36,14 +35,18 @@ const noises = [
 ]
 
 export function SoundControllers() {
-    const [noiseAsset, setNoiseAsset] = useState<string>('audio/pink.mp3')
+    const [noiseAsset, setNoiseAsset] = useState<string>('')
     const { isPlaying, togglePlaying, toggleAudioSrc } = useAudio(noiseAsset)
 
     const handleChangeNoise = (value: string) => {
-        setNoiseAsset(value)
-        toggleAudioSrc()
-        if (!isPlaying) {
-            togglePlaying()
+        const isAlreadySelected = noiseAsset === value
+
+        if (!isAlreadySelected) {
+            setNoiseAsset(value)
+            toggleAudioSrc()
+            if (!isPlaying) {
+                togglePlaying()
+            }
         }
     }
 
@@ -51,14 +54,19 @@ export function SoundControllers() {
         <SoundControllerContainer>
             <SoundControllerTitle>
                 <span>Ambient Sound</span>
-                <SoundControllerMuteButton onClick={togglePlaying}>
+                <SoundControllerMuteButton
+                    disabled={!noiseAsset}
+                    onClick={togglePlaying}
+                >
                     {isPlaying ? <SpeakerSlash /> : <SpeakerHigh />}
                 </SoundControllerMuteButton>
             </SoundControllerTitle>
             <SoundControllerContent>
                 {noises.map((noise) => {
+                    const isSelected = noiseAsset === noise.sound
                     return (
                         <SoundControllerButton
+                            $isSelected={isSelected}
                             key={noise.label}
                             onClick={() => handleChangeNoise(noise.sound)}
                         >

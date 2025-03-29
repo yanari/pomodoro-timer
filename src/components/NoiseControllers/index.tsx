@@ -11,12 +11,20 @@ import { SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react'
 
 export function NoiseControllers() {
     const [noiseAsset, setNoiseAsset] = useState<string>('audio/pink.mp3')
-    const { isPlaying, togglePlaying, toggleAudioSrc } = useAudio(noiseAsset)
+    const { isPlaying, toggleAudioSrc, togglePlaying } = useAudio(noiseAsset)
 
     const handleChangeNoise = (value: string) => {
-        setNoiseAsset(value)
-        toggleAudioSrc()
+        const isAlreadySelected = noiseAsset === value
+
+        if (!isAlreadySelected) {
+            setNoiseAsset(value)
+            toggleAudioSrc()
+            if (!isPlaying) {
+                togglePlaying()
+            }
+        }
     }
+
     return (
         <NoiseControllersContainer>
             <SegmentedTabs
@@ -27,7 +35,7 @@ export function NoiseControllers() {
                     { label: 'Brown Noise', id: 'audio/brown.mp3' },
                 ]}
             />
-            <ToggleSoundButton onClick={() => togglePlaying()}>
+            <ToggleSoundButton onClick={togglePlaying}>
                 {isPlaying ? (
                     <SpeakerSlash size={24} />
                 ) : (

@@ -36,7 +36,7 @@ interface ControlButtonProps {
 
 export const ControlButton = styled.button<ControlButtonProps>`
     background: ${(props) =>
-        props.$isPrimary ? props.theme.primary : props.theme.button};
+        props.$isPrimary ? props.theme.primary : props.theme.buttonBg};
     border: 2px solid ${(props) => props.theme.primary};
     padding: 1rem 2rem;
     border-radius: 8px;
