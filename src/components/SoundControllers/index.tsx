@@ -12,20 +12,19 @@ import {
     SoundControllerMuteButton,
     SoundControllerTitle,
 } from './styles'
-import { useAudio } from '../../hooks/useAudio'
-import { useState } from 'react'
+import { Assets, useSoundContext } from '../../contexts/SoundContext'
 
 const noises = [
-    { label: 'Pink Noise', sound: 'audio/pink.mp3', icon: <Brain size={24} /> },
+    { label: 'Pink Noise', sound: Assets.PINK, icon: Brain },
     {
         label: 'Brown Noise',
-        sound: 'audio/brown.mp3',
-        icon: <Barcode size={24} />,
+        sound: Assets.BROWN,
+        icon: Barcode,
     },
     {
         label: 'Coffee Shop',
-        sound: 'audio/coffee.mp3',
-        icon: <Coffee size={24} />,
+        sound: Assets.COFFEE,
+        icon: Coffee,
     },
     // {
     //     label: 'Lo-Fi',
@@ -35,19 +34,16 @@ const noises = [
 ]
 
 export function SoundControllers() {
-    const [noiseAsset, setNoiseAsset] = useState<string>('')
-    const { isPlaying, togglePlaying, toggleAudioSrc } = useAudio(noiseAsset)
+    const { isPlaying, pause, play, setAssetSource, assetSrc } =
+        useSoundContext()
 
-    const handleChangeNoise = (value: string) => {
-        const isAlreadySelected = noiseAsset === value
+    const handleChangeNoise = (value: Assets) => {
+        const isAlreadySelected = assetSrc === value
 
-        if (!isAlreadySelected) {
-            setNoiseAsset(value)
-            toggleAudioSrc()
-            if (!isPlaying) {
-                togglePlaying()
-            }
-        }
+        if (isAlreadySelected) return
+
+        setAssetSource(value)
+        play()
     }
 
     return (
@@ -55,22 +51,23 @@ export function SoundControllers() {
             <SoundControllerTitle>
                 <span>Ambient Sound</span>
                 <SoundControllerMuteButton
-                    disabled={!noiseAsset}
-                    onClick={togglePlaying}
+                    disabled={!assetSrc}
+                    onClick={isPlaying ? pause : play}
                 >
                     {isPlaying ? <SpeakerSlash /> : <SpeakerHigh />}
                 </SoundControllerMuteButton>
             </SoundControllerTitle>
             <SoundControllerContent>
                 {noises.map((noise) => {
-                    const isSelected = noiseAsset === noise.sound
+                    const isSelected = assetSrc === noise.sound
+                    const Icon = noise.icon
                     return (
                         <SoundControllerButton
                             $isSelected={isSelected}
                             key={noise.label}
                             onClick={() => handleChangeNoise(noise.sound)}
                         >
-                            {noise.icon}
+                            <Icon size={24} />
                             <span>{noise.label}</span>
                         </SoundControllerButton>
                     )
