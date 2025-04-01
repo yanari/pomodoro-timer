@@ -10,6 +10,8 @@ import { usePomodoroContext } from '../../contexts/PomodoroContext'
 import { Tag } from '../../components/Tag'
 import { HandPalm, Play, SkipForward } from '@phosphor-icons/react'
 import { SoundControllers } from '../../components/SoundControllers'
+import { useSoundContext } from '../../contexts/SoundContext'
+import { PomodoroMode } from '../../contexts/PomodoroContext/pomodoro.interface'
 
 export function Home() {
     const {
@@ -21,11 +23,18 @@ export function Home() {
         resetTimer,
     } = usePomodoroContext()
 
+    const { play, pause } = useSoundContext()
+
     const handleClickMainButton = () => {
         if (isRunning) {
             skipCurrent()
         } else {
             startTimer()
+            if (phase === PomodoroMode.FOCUS_TIME) {
+                play()
+            } else {
+                pause()
+            }
         }
     }
 

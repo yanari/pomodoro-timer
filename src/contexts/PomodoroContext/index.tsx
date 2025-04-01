@@ -11,7 +11,7 @@ import { ThemeVariant } from '../../styles/themes/theme.interface'
 import { pomodoroReducer } from '../../reducers/reducer'
 import { Actions } from '../../reducers/actions'
 
-const LOCAL_STORAGE_KEY = '@concentratimer:pomodoro-state-1.0.0'
+const LOCAL_STORAGE_KEY = '@concentratimer:pomodoro-state-1.0.1'
 
 interface PomodoroContextType {
     phase: PomodoroMode
@@ -41,6 +41,14 @@ const DEFAULT_SETTINGS = {
     pomodorosBeforeLongBreak: 4,
 }
 
+const initialState = {
+    isRunning: false,
+    pomodoroSections: [],
+    currentSectionStartedAt: null,
+    phase: PomodoroMode.FOCUS_TIME,
+    pomodoroCount: 0,
+}
+
 interface PomodoroContextProviderProps {
     children: ReactNode
     changeTheme: (theme: ThemeVariant) => void
@@ -61,19 +69,14 @@ export function PomodoroContextProvider({
 
     const [pomodoroState, dispatch] = useReducer(
         pomodoroReducer,
-        {
-            isRunning: false,
-            pomodoroSections: [],
-            currentSectionStartedAt: null,
-            phase: PomodoroMode.FOCUS_TIME,
-            pomodoroCount: 0,
-        },
+        initialState,
         () => {
             // disparada assim que o reducer é criado
             const storedStateAsJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
             if (storedStateAsJSON) {
                 return JSON.parse(storedStateAsJSON)
             }
+            return initialState
         }
     )
 
