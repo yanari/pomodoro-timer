@@ -3,3 +3,8 @@ export enum PomodoroMode {
     SHORT_BREAK = 'Short Break',
     LONG_BREAK = 'Long Break',
 }
+
+export interface PomodoroSection {
+    startTime: Date
+    completedPomodoros: number
+}

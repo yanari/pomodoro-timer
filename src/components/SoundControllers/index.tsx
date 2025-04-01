@@ -83,7 +83,7 @@ export function SoundControllers() {
                             id={noise.id}
                             onClick={() => handleChangeNoise(noise.sound)}
                             data-tooltip-html={noise.description}
-                            data-tooltip-place="top-start"
+                            data-tooltip-place="bottom-end"
                             data-tooltip-id={noise.id}
                         >
                             <Icon size={24} />

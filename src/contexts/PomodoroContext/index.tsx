@@ -6,13 +6,16 @@ import {
     useReducer,
     useState,
 } from 'react'
-import { PomodoroMode } from './pomodoro.interface'
+import { PomodoroMode, PomodoroSection } from './pomodoro.interface'
 import { ThemeVariant } from '../../styles/themes/theme.interface'
 import { pomodoroReducer } from '../../reducers/reducer'
 import { Actions } from '../../reducers/actions'
 
+const LOCAL_STORAGE_KEY = '@concentratimer:pomodoro-state-1.0.0'
+
 interface PomodoroContextType {
     phase: PomodoroMode
+    pomodoroSections: PomodoroSection[]
     isRunning: boolean
     timeLeft: number
     pomodoroCount: number
@@ -56,13 +59,31 @@ export function PomodoroContextProvider({
 
     const [timeLeft, setTimeLeft] = useState<number>(focusDuration)
 
-    const [pomodoroState, dispatch] = useReducer(pomodoroReducer, {
-        isRunning: false,
-        phase: PomodoroMode.FOCUS_TIME,
-        pomodoroCount: 0,
-    })
+    const [pomodoroState, dispatch] = useReducer(
+        pomodoroReducer,
+        {
+            isRunning: false,
+            pomodoroSections: [],
+            currentSectionStartedAt: null,
+            phase: PomodoroMode.FOCUS_TIME,
+            pomodoroCount: 0,
+        },
+        () => {
+            // disparada assim que o reducer é criado
+            const storedStateAsJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
+            if (storedStateAsJSON) {
+                return JSON.parse(storedStateAsJSON)
+            }
+        }
+    )
 
-    const { isRunning, phase, pomodoroCount } = pomodoroState
+    useEffect(() => {
+        const stateJSON = JSON.stringify(pomodoroState)
+
+        localStorage.setItem(LOCAL_STORAGE_KEY, stateJSON)
+    }, [pomodoroState])
+
+    const { isRunning, phase, pomodoroCount, pomodoroSections } = pomodoroState
 
     useEffect(() => {
         if (timeLeft === 0) {
@@ -111,6 +132,7 @@ export function PomodoroContextProvider({
         <PomodoroContext.Provider
             value={{
                 phase,
+                pomodoroSections,
                 isRunning,
                 timeLeft,
                 pomodoroCount,
