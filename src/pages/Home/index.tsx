@@ -28,13 +28,10 @@ export function Home() {
     const handleClickMainButton = () => {
         if (isRunning) {
             skipCurrent()
+            if (phase === PomodoroMode.FOCUS_TIME) play()
+            else pause()
         } else {
             startTimer()
-            if (phase === PomodoroMode.FOCUS_TIME) {
-                play()
-            } else {
-                pause()
-            }
         }
     }
 

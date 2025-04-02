@@ -44,10 +44,12 @@ export function pomodoroReducer(state: PomodoroState, action: PomodoroActions) {
             })
         case Actions.RESET_TIMER:
             return produce(state, (draft) => {
-                draft.pomodoroSections.push({
-                    completedPomodoros: draft.pomodoroCount,
-                    startTime: draft.currentSectionStartedAt!,
-                })
+                if (draft.pomodoroCount > 1) {
+                    draft.pomodoroSections.push({
+                        completedPomodoros: draft.pomodoroCount,
+                        startTime: draft.currentSectionStartedAt!,
+                    })
+                }
                 draft.isRunning = false
                 draft.currentSectionStartedAt = null
                 draft.phase = PomodoroMode.FOCUS_TIME
