@@ -8,6 +8,7 @@ import { Actions } from './actions'
 interface PomodoroState {
     isRunning: boolean
     currentSectionStartedAt: Date | null
+    phaseStartedAt: Date | null
     phase: PomodoroMode
     pomodoroSections: PomodoroSection[]
     pomodoroCount: number
@@ -28,15 +29,18 @@ export function pomodoroReducer(state: PomodoroState, action: PomodoroActions) {
         case Actions.START_TIMER:
             return produce(state, (draft) => {
                 draft.isRunning = true
+                draft.phaseStartedAt = new Date()
                 draft.currentSectionStartedAt = new Date()
             })
         case Actions.FINISH_BREAK_TIME:
             return produce(state, (draft) => {
+                draft.phaseStartedAt = new Date()
                 draft.phase = PomodoroMode.FOCUS_TIME
             })
         case Actions.FINISH_FOCUS_TIME:
             return produce(state, (draft) => {
                 const isLongBreak = action?.payload?.isLongBreak
+                draft.phaseStartedAt = new Date()
                 draft.phase = isLongBreak
                     ? PomodoroMode.LONG_BREAK
                     : PomodoroMode.SHORT_BREAK
@@ -51,6 +55,7 @@ export function pomodoroReducer(state: PomodoroState, action: PomodoroActions) {
                     })
                 }
                 draft.isRunning = false
+                draft.phaseStartedAt = null
                 draft.currentSectionStartedAt = null
                 draft.phase = PomodoroMode.FOCUS_TIME
                 draft.pomodoroCount = 0

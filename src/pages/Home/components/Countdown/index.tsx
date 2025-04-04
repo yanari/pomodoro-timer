@@ -1,28 +1,56 @@
 import { useEffect } from 'react'
 import { CountdownContainer, Separator } from './styles'
 import { usePomodoroContext } from '../../../../contexts/PomodoroContext'
+import { differenceInSeconds } from 'date-fns'
+import { PomodoroMode } from '../../../../contexts/PomodoroContext/pomodoro.interface'
 
 export function Countdown() {
-    const { timeLeft, isRunning, setTimeLeft } = usePomodoroContext()
+    const {
+        isRunning,
+        amountSecondsPassed,
+        setSecondsPassed,
+        phaseStartedAt,
+        phase,
+        settings,
+        skipCurrent,
+    } = usePomodoroContext()
+
+    const totalSeconds =
+        phase === PomodoroMode.FOCUS_TIME
+            ? settings.focusDuration
+            : phase === PomodoroMode.LONG_BREAK
+            ? settings.longBreakDuration
+            : phase === PomodoroMode.SHORT_BREAK
+            ? settings.shortBreakDuration
+            : 0
 
     useEffect(() => {
         let interval: number
-        if (isRunning) {
-            console.log(isRunning)
+        if (isRunning && phaseStartedAt) {
             interval = setInterval(() => {
-                setTimeLeft((state) => {
-                    return state < 1 ? 0 : state - 1
-                })
+                const differenceSeconds = differenceInSeconds(
+                    new Date(),
+                    new Date(phaseStartedAt)
+                )
+
+                if (differenceSeconds >= totalSeconds) {
+                    skipCurrent()
+                    setSecondsPassed(totalSeconds)
+                } else {
+                    setSecondsPassed(differenceSeconds)
+                }
             }, 1000)
         }
 
         return () => {
             clearInterval(interval)
         }
-    }, [isRunning])
+    }, [totalSeconds, setSecondsPassed, skipCurrent])
 
-    const minutesAmount = Math.floor(timeLeft / 60)
-    const secondsAmount = timeLeft % 60
+    const currentSeconds = isRunning ? totalSeconds - amountSecondsPassed : 0
+
+    const minutesAmount = Math.floor(currentSeconds / 60)
+    const secondsAmount = currentSeconds % 60
 
     const minutes = String(minutesAmount).padStart(2, '0')
     const seconds = String(secondsAmount).padStart(2, '0')

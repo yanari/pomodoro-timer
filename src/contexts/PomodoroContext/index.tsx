@@ -6,22 +6,30 @@ import {
     useReducer,
     useState,
 } from 'react'
-import { PomodoroMode, PomodoroSection } from './pomodoro.interface'
+import { PomodoroMode } from './pomodoro.interface'
 import { ThemeVariant } from '../../styles/themes/theme.interface'
 import { pomodoroReducer } from '../../reducers/reducer'
 import { Actions } from '../../reducers/actions'
+import { differenceInSeconds } from 'date-fns'
+import { LOCAL_STORAGE_KEY } from '../../shared/constants'
 
-const LOCAL_STORAGE_KEY = '@concentratimer:pomodoro-state-1.0.1'
+interface Settings {
+    focusDuration: number
+    longBreakDuration: number
+    shortBreakDuration: number
+    pomodorosBeforeLongBreak: number
+}
 
 interface PomodoroContextType {
     phase: PomodoroMode
-    pomodoroSections: PomodoroSection[]
+    settings: Settings
+    phaseStartedAt: Date | null
     isRunning: boolean
-    timeLeft: number
     pomodoroCount: number
+    amountSecondsPassed: number
     skipCurrent: () => void
     resetTimer: () => void
-    setTimeLeft: React.Dispatch<React.SetStateAction<number>>
+    setSecondsPassed: (seconds: number) => void
     startTimer: () => void
 }
 
@@ -43,7 +51,6 @@ const DEFAULT_SETTINGS = {
 
 const initialState = {
     isRunning: false,
-    pomodoroSections: [],
     currentSectionStartedAt: null,
     phase: PomodoroMode.FOCUS_TIME,
     pomodoroCount: 0,
@@ -58,14 +65,7 @@ export function PomodoroContextProvider({
     children,
     changeTheme,
 }: PomodoroContextProviderProps) {
-    const {
-        focusDuration,
-        longBreakDuration,
-        pomodorosBeforeLongBreak,
-        shortBreakDuration,
-    } = DEFAULT_SETTINGS
-
-    const [timeLeft, setTimeLeft] = useState<number>(focusDuration)
+    const { pomodorosBeforeLongBreak } = DEFAULT_SETTINGS
 
     const [pomodoroState, dispatch] = useReducer(
         pomodoroReducer,
@@ -86,13 +86,16 @@ export function PomodoroContextProvider({
         localStorage.setItem(LOCAL_STORAGE_KEY, stateJSON)
     }, [pomodoroState])
 
-    const { isRunning, phase, pomodoroCount, pomodoroSections } = pomodoroState
+    const { isRunning, phase, pomodoroCount, phaseStartedAt } = pomodoroState
 
-    useEffect(() => {
-        if (timeLeft === 0) {
-            skipCurrent()
+    const [amountSecondsPassed, setAmountsSecondsPassed] = useState<number>(
+        () => {
+            if (isRunning && phaseStartedAt) {
+                return differenceInSeconds(new Date(), new Date(phaseStartedAt))
+            }
+            return 0
         }
-    }, [timeLeft])
+    )
 
     const startTimer = () => {
         dispatch({ type: Actions.START_TIMER })
@@ -106,17 +109,16 @@ export function PomodoroContextProvider({
         changeTheme(
             isLongBreak ? PomodoroMode.LONG_BREAK : PomodoroMode.SHORT_BREAK
         )
-        setTimeLeft(isLongBreak ? longBreakDuration : shortBreakDuration)
     }
 
     const finishBreakTime = () => {
         dispatch({ type: Actions.FINISH_BREAK_TIME })
 
         changeTheme(PomodoroMode.FOCUS_TIME)
-        setTimeLeft(DEFAULT_SETTINGS.focusDuration)
     }
 
     const skipCurrent = () => {
+        setAmountsSecondsPassed(0)
         if (phase === PomodoroMode.FOCUS_TIME) {
             finishFocusTime()
         } else {
@@ -124,25 +126,30 @@ export function PomodoroContextProvider({
         }
     }
 
+    const setSecondsPassed = (seconds: number) => {
+        setAmountsSecondsPassed(seconds)
+    }
+
     const resetTimer = () => {
         dispatch({ type: Actions.RESET_TIMER })
 
         changeTheme(PomodoroMode.FOCUS_TIME)
-        setTimeLeft(focusDuration)
+        setAmountsSecondsPassed(0)
     }
 
     return (
         <PomodoroContext.Provider
             value={{
                 phase,
-                pomodoroSections,
+                phaseStartedAt,
                 isRunning,
-                timeLeft,
+                amountSecondsPassed,
                 pomodoroCount,
-                setTimeLeft,
+                setSecondsPassed,
                 resetTimer,
                 startTimer,
                 skipCurrent,
+                settings: DEFAULT_SETTINGS,
             }}
         >
             {children}

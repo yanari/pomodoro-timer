@@ -1,14 +1,16 @@
-import { formatDistanceToNow } from 'date-fns'
-import { usePomodoroContext } from '../../contexts/PomodoroContext'
-import { HistoryContainer, HistoryList } from './styles'
-import { ptBR } from 'date-fns/locale'
+// import { formatDistanceToNow } from 'date-fns'
+// import { usePomodoroContext } from '../../contexts/PomodoroContext'
+import {
+    HistoryContainer,
+    // HistoryList
+} from './styles'
 
 export function History() {
-    const { pomodoroSections } = usePomodoroContext()
+    // const { pomodoroSections } = usePomodoroContext()
     return (
         <HistoryContainer>
             <h1>History</h1>
-            <HistoryList>
+            {/* <HistoryList>
                 <table>
                     <thead>
                         <tr>
@@ -21,15 +23,14 @@ export function History() {
                             return (
                                 <tr key={String(section.startTime)}>
                                     <td>
-                                        {section.completedPomodoros} Pomodoros
-                                        completed
+                                        {section.completedPomodoros} 🍅
+                                        Pomodoros completed
                                     </td>
                                     <td>
                                         {formatDistanceToNow(
                                             section.startTime,
                                             {
                                                 addSuffix: true,
-                                                locale: ptBR,
                                             }
                                         )}
                                     </td>
@@ -38,7 +39,7 @@ export function History() {
                         })}
                     </tbody>
                 </table>
-            </HistoryList>
+            </HistoryList> */}
         </HistoryContainer>
     )
 }
