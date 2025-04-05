@@ -31,7 +31,7 @@ export function Home() {
             if (currentPhase === PomodoroPhase.FOCUS_TIME) play()
             else pause()
         }
-    }, [currentPhase])
+    }, [currentPhase, isRunning])
 
     const handleClickMainButton = () => {
         if (isRunning) {

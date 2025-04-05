@@ -15,7 +15,7 @@ function App() {
         const storedStateAsJSON = localStorage.getItem(LOCAL_STORAGE_KEY)
         if (storedStateAsJSON) {
             const stored = JSON.parse(storedStateAsJSON)
-            const mode = stored.phase as PomodoroPhase
+            const mode = stored.currentPhase as PomodoroPhase
             return ThemeColors[mode]
         }
         return defaultTheme

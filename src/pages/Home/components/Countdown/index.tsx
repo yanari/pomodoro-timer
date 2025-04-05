@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { CountdownContainer, Separator } from './styles'
 import { usePomodoroContext } from '../../../../contexts/PomodoroContext'
 import { differenceInSeconds } from 'date-fns'
-import { PomodoroPhase } from '../../../../contexts/PomodoroContext/pomodoro.interface'
 
 export function Countdown() {
     const {
@@ -10,32 +9,22 @@ export function Countdown() {
         amountSecondsPassed,
         setSecondsPassed,
         currentPhaseStartedAt,
-        currentPhase,
-        settings,
+        totalSeconds,
         skipCurrent,
     } = usePomodoroContext()
 
-    const totalSeconds =
-        currentPhase === PomodoroPhase.FOCUS_TIME
-            ? settings.focusDuration
-            : currentPhase === PomodoroPhase.LONG_BREAK
-            ? settings.longBreakDuration
-            : currentPhase === PomodoroPhase.SHORT_BREAK
-            ? settings.shortBreakDuration
-            : 0
-
     useEffect(() => {
         let interval: number
-        if (isRunning && currentPhaseStartedAt) {
+        if (currentPhaseStartedAt) {
             interval = setInterval(() => {
                 const differenceSeconds = differenceInSeconds(
                     new Date(),
                     new Date(currentPhaseStartedAt)
                 )
 
-                if (differenceSeconds >= totalSeconds) {
-                    skipCurrent()
+                if (differenceSeconds > totalSeconds) {
                     setSecondsPassed(totalSeconds)
+                    skipCurrent()
                 } else {
                     setSecondsPassed(differenceSeconds)
                 }
@@ -45,7 +34,13 @@ export function Countdown() {
         return () => {
             clearInterval(interval)
         }
-    }, [totalSeconds, setSecondsPassed, skipCurrent])
+    }, [
+        totalSeconds,
+        setSecondsPassed,
+        skipCurrent,
+        currentPhaseStartedAt,
+        isRunning,
+    ])
 
     const currentSeconds = isRunning ? totalSeconds - amountSecondsPassed : 0
 

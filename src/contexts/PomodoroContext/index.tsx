@@ -6,7 +6,7 @@ import {
     useReducer,
     useState,
 } from 'react'
-import { PomodoroPhase, PomodoroSection, Settings } from './pomodoro.interface'
+import { PomodoroPhase, PomodoroSection } from './pomodoro.interface'
 import { ThemeVariant } from '../../styles/themes/theme.interface'
 import { pomodoroReducer } from '../../reducers/reducer'
 import { Actions } from '../../reducers/actions'
@@ -14,12 +14,12 @@ import { differenceInSeconds } from 'date-fns'
 import { LOCAL_STORAGE_KEY } from '../../shared/constants'
 
 const DEFAULT_SETTINGS = {
-    // focusDuration: 25 * 60,
-    // longBreakDuration: 15 * 60,
-    // shortBreakDuration: 5 * 60,
-    focusDuration: 25, // test
-    longBreakDuration: 15, // test
-    shortBreakDuration: 5, // test
+    focusDuration: 25 * 60,
+    longBreakDuration: 15 * 60,
+    shortBreakDuration: 5 * 60,
+    // focusDuration: 3, // test
+    // longBreakDuration: 3, // test
+    // shortBreakDuration: 3, // test
     pomodorosBeforeLongBreak: 4,
 }
 
@@ -27,14 +27,14 @@ interface PomodoroContextType {
     currentPhase: PomodoroPhase
     currentPhaseStartedAt: Date | null
     currentPomodoroCount: number
+    totalSeconds: number
     sections: PomodoroSection[]
-    settings: Settings
     isRunning: boolean
     amountSecondsPassed: number
+    startTimer: () => void
     skipCurrent: () => void
     resetTimer: () => void
     setSecondsPassed: (seconds: number) => void
-    startTimer: () => void
 }
 
 const initialState = {
@@ -114,10 +114,10 @@ export function PomodoroContextProvider({
 
     const finishFocusTime = () => {
         if (currentSection) {
-            const isLongBreak =
-                (currentSection.pomodoroCount + 1) %
-                    settings.pomodorosBeforeLongBreak ===
-                0
+            const { pomodoroCount } = currentSection
+            const count = pomodoroCount + 1
+            const { pomodorosBeforeLongBreak } = settings
+            const isLongBreak = count % pomodorosBeforeLongBreak === 0
 
             dispatch({
                 type: Actions.FINISH_FOCUS_TIME,
@@ -158,22 +158,33 @@ export function PomodoroContextProvider({
         setAmountsSecondsPassed(0)
     }
 
+    const currentPomodoroCount = currentSection
+        ? currentSection.pomodoroCount
+        : 0
+
+    const totalSeconds =
+        currentPhase === PomodoroPhase.FOCUS_TIME
+            ? settings.focusDuration
+            : currentPhase === PomodoroPhase.LONG_BREAK
+            ? settings.longBreakDuration
+            : currentPhase === PomodoroPhase.SHORT_BREAK
+            ? settings.shortBreakDuration
+            : 0
+
     return (
         <PomodoroContext.Provider
             value={{
                 currentPhase,
                 currentPhaseStartedAt,
-                currentPomodoroCount: currentSection
-                    ? currentSection.pomodoroCount
-                    : 0,
+                currentPomodoroCount,
+                totalSeconds,
+                sections,
                 isRunning,
                 amountSecondsPassed,
-                sections,
-                settings: DEFAULT_SETTINGS,
-                setSecondsPassed,
-                resetTimer,
                 startTimer,
                 skipCurrent,
+                resetTimer,
+                setSecondsPassed,
             }}
         >
             {children}

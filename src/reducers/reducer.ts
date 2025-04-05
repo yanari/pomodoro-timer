@@ -31,27 +31,27 @@ export function pomodoroReducer(state: PomodoroState, action: PomodoroActions) {
         case Actions.START_TIMER:
             return produce(state, (draft) => {
                 const now = new Date()
+                draft.isRunning = true
+                draft.currentPhaseStartedAt = now
+                draft.currentSectionStartedAt = now
                 draft.sections.push({
                     id: String(now.getTime()),
                     startedAt: now,
                     pomodoroCount: 0,
                 })
-                draft.isRunning = true
-                draft.currentPhaseStartedAt = now
-                draft.currentSectionStartedAt = now
             })
         case Actions.FINISH_BREAK_TIME:
             return produce(state, (draft) => {
-                const nextPhase = PomodoroPhase.FOCUS_TIME
                 const now = new Date()
                 draft.currentPhaseStartedAt = now
+                const nextPhase = PomodoroPhase.FOCUS_TIME
                 draft.currentPhase = nextPhase
             })
         case Actions.FINISH_FOCUS_TIME:
             return produce(state, (draft) => {
-                const isNextLongBreak = action?.payload?.isLongBreak
                 const now = new Date()
                 draft.currentPhaseStartedAt = now
+                const isNextLongBreak = action?.payload?.isLongBreak
                 draft.currentPhase = isNextLongBreak
                     ? PomodoroPhase.LONG_BREAK
                     : PomodoroPhase.SHORT_BREAK
