@@ -12,8 +12,8 @@ import {
     SoundControllerMuteButton,
     SoundControllerTitle,
 } from './styles'
-import { useSoundContext } from '../../contexts/SoundContext'
-import { Assets } from '../../contexts/SoundContext/sound.interface'
+import { useSoundContext } from '../../../../contexts/SoundContext'
+import { Assets } from '../../../../contexts/SoundContext/sound.interface'
 import { Tooltip } from 'react-tooltip'
 
 const noises = [

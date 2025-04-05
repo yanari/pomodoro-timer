@@ -2,35 +2,35 @@ import { useEffect } from 'react'
 import { CountdownContainer, Separator } from './styles'
 import { usePomodoroContext } from '../../../../contexts/PomodoroContext'
 import { differenceInSeconds } from 'date-fns'
-import { PomodoroMode } from '../../../../contexts/PomodoroContext/pomodoro.interface'
+import { PomodoroPhase } from '../../../../contexts/PomodoroContext/pomodoro.interface'
 
 export function Countdown() {
     const {
         isRunning,
         amountSecondsPassed,
         setSecondsPassed,
-        phaseStartedAt,
-        phase,
+        currentPhaseStartedAt,
+        currentPhase,
         settings,
         skipCurrent,
     } = usePomodoroContext()
 
     const totalSeconds =
-        phase === PomodoroMode.FOCUS_TIME
+        currentPhase === PomodoroPhase.FOCUS_TIME
             ? settings.focusDuration
-            : phase === PomodoroMode.LONG_BREAK
+            : currentPhase === PomodoroPhase.LONG_BREAK
             ? settings.longBreakDuration
-            : phase === PomodoroMode.SHORT_BREAK
+            : currentPhase === PomodoroPhase.SHORT_BREAK
             ? settings.shortBreakDuration
             : 0
 
     useEffect(() => {
         let interval: number
-        if (isRunning && phaseStartedAt) {
+        if (isRunning && currentPhaseStartedAt) {
             interval = setInterval(() => {
                 const differenceSeconds = differenceInSeconds(
                     new Date(),
-                    new Date(phaseStartedAt)
+                    new Date(currentPhaseStartedAt)
                 )
 
                 if (differenceSeconds >= totalSeconds) {
@@ -59,6 +59,7 @@ export function Countdown() {
         if (isRunning) {
             document.title = `${minutes}:${seconds}`
         }
+        document.title = 'Pomodoro Timer'
     }, [minutes, seconds, isRunning])
 
     return (

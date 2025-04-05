@@ -1,17 +1,19 @@
 import { produce } from 'immer'
 import {
-    PomodoroMode,
+    PomodoroPhase,
     PomodoroSection,
+    Settings,
 } from '../contexts/PomodoroContext/pomodoro.interface'
 import { Actions } from './actions'
 
 interface PomodoroState {
-    isRunning: boolean
+    sections: PomodoroSection[]
+    currentPhase: PomodoroPhase
+    currentPhaseStartedAt: Date | null
     currentSectionStartedAt: Date | null
-    phaseStartedAt: Date | null
-    phase: PomodoroMode
-    pomodoroSections: PomodoroSection[]
-    pomodoroCount: number
+    settings: Settings
+    isRunning: boolean
+    amountSecondsPassed: 0
 }
 
 interface PomodoroPayload {
@@ -28,37 +30,45 @@ export function pomodoroReducer(state: PomodoroState, action: PomodoroActions) {
     switch (action.type) {
         case Actions.START_TIMER:
             return produce(state, (draft) => {
+                const now = new Date()
+                draft.sections.push({
+                    id: String(now.getTime()),
+                    startedAt: now,
+                    pomodoroCount: 0,
+                })
                 draft.isRunning = true
-                draft.phaseStartedAt = new Date()
-                draft.currentSectionStartedAt = new Date()
+                draft.currentPhaseStartedAt = now
+                draft.currentSectionStartedAt = now
             })
         case Actions.FINISH_BREAK_TIME:
             return produce(state, (draft) => {
-                draft.phaseStartedAt = new Date()
-                draft.phase = PomodoroMode.FOCUS_TIME
+                const nextPhase = PomodoroPhase.FOCUS_TIME
+                const now = new Date()
+                draft.currentPhaseStartedAt = now
+                draft.currentPhase = nextPhase
             })
         case Actions.FINISH_FOCUS_TIME:
             return produce(state, (draft) => {
-                const isLongBreak = action?.payload?.isLongBreak
-                draft.phaseStartedAt = new Date()
-                draft.phase = isLongBreak
-                    ? PomodoroMode.LONG_BREAK
-                    : PomodoroMode.SHORT_BREAK
-                draft.pomodoroCount++
+                const isNextLongBreak = action?.payload?.isLongBreak
+                const now = new Date()
+                draft.currentPhaseStartedAt = now
+                draft.currentPhase = isNextLongBreak
+                    ? PomodoroPhase.LONG_BREAK
+                    : PomodoroPhase.SHORT_BREAK
+                const currentSection = draft.sections.find(
+                    (section) =>
+                        section.startedAt === draft.currentSectionStartedAt
+                )
+                if (currentSection) {
+                    currentSection.pomodoroCount++
+                }
             })
         case Actions.RESET_TIMER:
             return produce(state, (draft) => {
-                if (draft.pomodoroCount > 1) {
-                    draft.pomodoroSections.push({
-                        completedPomodoros: draft.pomodoroCount,
-                        startTime: draft.currentSectionStartedAt!,
-                    })
-                }
                 draft.isRunning = false
-                draft.phaseStartedAt = null
+                draft.currentPhaseStartedAt = null
                 draft.currentSectionStartedAt = null
-                draft.phase = PomodoroMode.FOCUS_TIME
-                draft.pomodoroCount = 0
+                draft.currentPhase = PomodoroPhase.FOCUS_TIME
             })
         default:
             return state
