@@ -41,6 +41,11 @@ export function Home() {
         }
     }
 
+    const stopCountdown = () => {
+        pause()
+        resetTimer()
+    }
+
     return (
         <HomeContainer>
             <StatusPomodoroContainer>
@@ -65,7 +70,7 @@ export function Home() {
                     {isRunning ? <SkipForward size={24} /> : <Play size={24} />}
                     {isRunning ? 'Skip' : 'Start'}
                 </ControlButton>
-                <ControlButton type="button" onClick={resetTimer}>
+                <ControlButton type="button" onClick={stopCountdown}>
                     <HandPalm size={24} />
                     Stop Section
                 </ControlButton>
