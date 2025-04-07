@@ -28,7 +28,9 @@ interface PomodoroContextType {
     currentPhaseStartedAt: Date | null
     currentPomodoroCount: number
     totalSeconds: number
+    currentSection: PomodoroSection | null
     sections: PomodoroSection[]
+    hasSections: boolean
     isRunning: boolean
     amountSecondsPassed: number
     startTimer: () => void
@@ -39,6 +41,7 @@ interface PomodoroContextType {
 
 const initialState = {
     sections: [],
+    currentSection: null,
     currentPhase: PomodoroPhase.FOCUS_TIME,
     currentPhaseStartedAt: null,
     settings: DEFAULT_SETTINGS,
@@ -86,8 +89,8 @@ export function PomodoroContextProvider({
     const {
         isRunning,
         currentPhaseStartedAt,
-        currentSectionStartedAt,
         sections,
+        currentSection,
         currentPhase,
         settings,
     } = pomodoroState
@@ -107,10 +110,6 @@ export function PomodoroContextProvider({
     const startTimer = () => {
         dispatch({ type: Actions.START_TIMER })
     }
-
-    const currentSection = sections.find(
-        (section) => section.startedAt === currentSectionStartedAt
-    )
 
     const finishFocusTime = () => {
         if (currentSection) {
@@ -171,6 +170,8 @@ export function PomodoroContextProvider({
             ? settings.shortBreakDuration
             : 0
 
+    const hasSections = sections.length > 0
+
     return (
         <PomodoroContext.Provider
             value={{
@@ -178,7 +179,9 @@ export function PomodoroContextProvider({
                 currentPhaseStartedAt,
                 currentPomodoroCount,
                 totalSeconds,
+                currentSection,
                 sections,
+                hasSections,
                 isRunning,
                 amountSecondsPassed,
                 startTimer,

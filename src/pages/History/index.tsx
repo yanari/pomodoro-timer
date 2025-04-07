@@ -1,16 +1,23 @@
-// import { formatDistanceToNow } from 'date-fns'
-// import { usePomodoroContext } from '../../contexts/PomodoroContext'
-import {
-    HistoryContainer,
-    // HistoryList
-} from './styles'
+import { formatDistanceToNow } from 'date-fns'
+import { usePomodoroContext } from '../../contexts/PomodoroContext'
+import { HistoryContainer, HistoryList } from './styles'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export function History() {
-    // const { pomodoroSections } = usePomodoroContext()
+    const navigate = useNavigate()
+    const { sections, hasSections } = usePomodoroContext()
+
+    useEffect(() => {
+        if (!hasSections) {
+            navigate('/')
+        }
+    }, [])
+
     return (
         <HistoryContainer>
             <h1>History</h1>
-            {/* <HistoryList>
+            <HistoryList>
                 <table>
                     <thead>
                         <tr>
@@ -19,16 +26,16 @@ export function History() {
                         </tr>
                     </thead>
                     <tbody>
-                        {pomodoroSections.map((section) => {
+                        {sections.map((section) => {
                             return (
-                                <tr key={String(section.startTime)}>
+                                <tr key={String(section.id)}>
                                     <td>
-                                        {section.completedPomodoros} 🍅
-                                        Pomodoros completed
+                                        {section.pomodoroCount} 🍅 Pomodoros
+                                        completed
                                     </td>
                                     <td>
                                         {formatDistanceToNow(
-                                            section.startTime,
+                                            section.startedAt,
                                             {
                                                 addSuffix: true,
                                             }
@@ -39,7 +46,7 @@ export function History() {
                         })}
                     </tbody>
                 </table>
-            </HistoryList> */}
+            </HistoryList>
         </HistoryContainer>
     )
 }
