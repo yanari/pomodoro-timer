@@ -23,9 +23,18 @@ export const PomodoroDisplayContainer = styled.div`
     gap: 0.5rem;
 `
 
+export const PomodoroDisplayLabel = styled.div`
+    display: none;
+
+    @media (width >= 48rem) {
+        display: flex;
+    }
+`
+
 export const ControlButtonsContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+
     gap: 1.5rem;
     max-width: 40rem;
 `

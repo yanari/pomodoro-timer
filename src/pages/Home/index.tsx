@@ -3,6 +3,7 @@ import {
     ControlButtonsContainer,
     HomeContainer,
     PomodoroDisplayContainer,
+    PomodoroDisplayLabel,
     StatusPomodoroContainer,
 } from './styles'
 import { Countdown } from './components/Countdown'
@@ -53,7 +54,10 @@ export function Home() {
                 <PomodoroDisplayContainer>
                     {currentPomodoroCount > 0 && (
                         <Tag>
-                            Completed Pomodoros: 🍅 x{currentPomodoroCount}
+                            <PomodoroDisplayLabel>
+                                Completed Pomodoros:{' '}
+                            </PomodoroDisplayLabel>
+                            🍅 x{currentPomodoroCount}
                         </Tag>
                     )}
                 </PomodoroDisplayContainer>
@@ -70,10 +74,12 @@ export function Home() {
                     {isRunning ? <SkipForward size={24} /> : <Play size={24} />}
                     {isRunning ? 'Skip' : 'Start'}
                 </ControlButton>
-                <ControlButton type="button" onClick={stopCountdown}>
-                    <HandPalm size={24} />
-                    Stop Section
-                </ControlButton>
+                {isRunning && (
+                    <ControlButton type="button" onClick={stopCountdown}>
+                        <HandPalm size={24} />
+                        Reset
+                    </ControlButton>
+                )}
             </ControlButtonsContainer>
 
             <SoundControllers />

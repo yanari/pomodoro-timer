@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const HistoryContainer = styled.main`
     flex: 1;
-    padding: 3.5rem;
+    padding: 0rem;
     display: flex;
     flex-direction: column;
 
@@ -10,17 +10,21 @@ export const HistoryContainer = styled.main`
         font-size: 1.5rem;
         color: ${(props) => props.theme.primary};
     }
+
+    @media (width >= 48rem) {
+        padding: 3.5rem;
+    }
 `
 
 export const HistoryList = styled.div`
     flex: 1;
     overflow: auto;
-    margin-top: 2rem;
+    margin: 2rem 0;
 
     table {
         width: 100%;
         border-collapse: collapse;
-        min-width: 600px;
+        /* min-width: 600px; */
 
         th {
             background-color: ${(props) => props.theme.background};
