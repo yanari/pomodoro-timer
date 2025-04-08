@@ -53,6 +53,7 @@ export function Countdown() {
     useEffect(() => {
         if (isRunning) {
             document.title = `${minutes}:${seconds}`
+            return
         }
         document.title = 'Pomodoro Timer'
     }, [minutes, seconds, isRunning])
