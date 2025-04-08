@@ -27,7 +27,7 @@ export const PomodoroDisplayLabel = styled.div`
     display: none;
 
     @media (width >= 48rem) {
-        display: flex;
+        display: inline-block;
     }
 `
 
