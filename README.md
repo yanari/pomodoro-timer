@@ -1,27 +1,27 @@
 # ⏱️ NeuroTimer
 
-**NeuroTimer** is a simple Pomodoro-style timer built with ADHD and neurodivergent users in mind. It offers optional background sounds and short explanations to help you choose the best sound for your task.
+**NeuroTimer** is a simple, distraction-free Pomodoro timer with ambient sound options — built to support focus for ADHD and neurodivergent users.
 
-This is a minimal MVP focused on helping you get into a rhythm — whether you're studying, working, or just trying to stay on track.
+This MVP version includes basic Pomodoro functionality and tooltips that suggest which type of background noise may work best for your current task. No logins, no dashboards — just hit start and focus.
 
 ---
 
 ## 🎯 Features
 
-- 🍅 Basic Pomodoro timer flow (focus + breaks)
-- 🎵 Optional ambient noise:  
+- 🍅 Pomodoro-style timer: focus, short break, long break cycles  
+- 🎵 Ambient noise options:  
   - Pink noise  
   - Brown noise  
   - Coffee shop sounds  
-- 💡 Tooltips with brief suggestions on how each sound can help with concentration
+- 💡 Tooltips with quick guidance on when to use each sound  
 
 ---
 
 ## 🧠 Why NeuroTimer?
 
-Focus tools are often overwhelming or too rigid — NeuroTimer is intentionally simple. It’s made for people who benefit from structure but don’t need extra noise (unless it's brown noise).
+This project was made with ADHD and neurodivergent users in mind. The goal is to offer a soft structure that helps with task initiation and focus — without overloading you with features or complexity.
 
-This project was created with ADHD and neurodivergent brains in mind — light, flexible, and easy to use.
+It’s an evolving experiment in building tools that align with real mental health needs, starting simple and growing mindfully.
 
 ---
 
@@ -29,31 +29,14 @@ This project was created with ADHD and neurodivergent brains in mind — light, 
 
 - React  
 - TypeScript  
-- Styled Components
+- Styled Components  
+- Vite  
 
 ---
 
-## 🧪 What's Next
+## 🚀 Getting Started
 
-- Customizable session lengths  
-- Sound volume control  
-- Optional soft notifications  
-- Accessibility improvements  
-
----
-
-## 📸 Preview
-
-*Screenshot or demo coming soon*
-
----
-
-## 🤝 Contributing
-
-Suggestions and ideas are welcome — especially from neurodivergent folks! Feel free to open issues or submit pull requests.
-
----
-
-## 📄 License
-
-MIT
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/your-username/neurotimer.git
+   cd neurotimer
